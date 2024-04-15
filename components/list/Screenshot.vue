@@ -40,7 +40,7 @@ const openModalDeleteScreenshot = (path?: string) => {
         label="Delete Selected"
         color="red" />
     </div>
-    <p v-if="pending">Loading...</p>
+    <LoadingState v-if="pending" />
     <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
       <p v-if="isDataEmpty">No screenshots</p>
       <CardScreenshot

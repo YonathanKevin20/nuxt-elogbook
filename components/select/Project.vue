@@ -1,28 +1,20 @@
 <script setup lang="ts">
-const items = ref<SelectProject[]>([])
-
 const model = defineModel<string>()
 
-const fetchData = async () => {
-  try {
-    const data = await $fetch(`/api/projects`)
-
-    items.value = data
-  } catch (error: any) {
-    console.error(error)
-  }
-}
-
-onMounted(() => {
-  fetchData()
+const { data, pending, refresh } = await useLazyFetch('/api/projects', {
+  default: () => [],
 })
 </script>
 
 <template>
-  <USelect
-    v-model="model"
-    placeholder="Search..."
-    :options="items"
-    value-attribute="id"
-    option-attribute="name" />
+  <div>
+    <LoadingState v-if="pending" />
+    <USelect
+      v-else
+      v-model="model"
+      placeholder="Search..."
+      :options="data"
+      value-attribute="id"
+      option-attribute="name" />
+  </div>
 </template>
