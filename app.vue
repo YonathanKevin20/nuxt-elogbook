@@ -20,19 +20,9 @@ const activeClass = 'text-sky-700 font-bold';
             inactive-class="text-gray-500 hover:text-red-700">Home</ULink>
           <span> | </span>
           <ULink
-            to="/task"
+            to="/tasks"
             :active-class="activeClass"
             inactive-class="text-gray-500 hover:text-red-700">Task</ULink>
-          <!-- <span> | </span>
-          <ULink
-            to="/vehicle"
-            :active-class="activeClass"
-            inactive-class="text-gray-500 hover:text-red-700">Vehicle</ULink>
-          <span> | </span>
-          <ULink
-            to="/phone"
-            :active-class="activeClass"
-            inactive-class="text-gray-500 hover:text-red-700">Phone</ULink> -->
         </div>
         <Auth />
       </nav>

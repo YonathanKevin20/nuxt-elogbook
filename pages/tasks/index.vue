@@ -32,11 +32,11 @@ const actionItems = (row: { id: number, screenshots_count: number }) => [
   [{
     label: 'Edit',
     icon: 'i-heroicons-pencil-square-20-solid',
-    click: () => navigateTo(`/task/${row.id}/edit`)
+    click: () => navigateTo(`/tasks/${row.id}/edit`)
   }, {
     label: `Screenshots (${row.screenshots_count})`,
     icon: 'i-heroicons-photo-20-solid',
-    click: () => navigateTo(`/task/${row.id}/screenshot`)
+    click: () => navigateTo(`/tasks/${row.id}/screenshot`)
   }], [{
     label: 'Delete',
     icon: 'i-heroicons-trash-20-solid',
@@ -76,7 +76,7 @@ const openModalDeleteTask = (id: number) => {
 
     <div class="my-4">
       <UButton
-        to="/task/create"
+        to="/tasks/create"
         label="Create"
         variant="solid"
         color="sky" />

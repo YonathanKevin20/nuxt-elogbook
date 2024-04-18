@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '#ui/types'
-import type { TaskEdit } from '~/schemas/TaskEditSchema'
-import { TaskEditSchema } from '~/schemas/TaskEditSchema'
+import type { TaskCreate } from '~/schemas/TaskCreateSchema'
+import { TaskCreateSchema } from '~/schemas/TaskCreateSchema'
 
 useHead({
-  title: 'Edit Task'
+  title: 'Create Task'
 })
 definePageMeta({
   middleware: 'auth'
@@ -20,42 +20,23 @@ const state = reactive({
   status: '',
 })
 
-const route = useRoute()
-const id = route.params.id
-const initState = async () => {
-  try {
-    const data = await $fetch(`/api/tasks-self/${id}`)
-
-    state.project_id = ''+data.project_id
-    state.implemented_at = data.implemented_at
-    state.description = data.description
-    state.status = data.status
-  } catch (error: any) {
-    console.error(error)
-  }
-}
-
-onMounted(() => {
-  initState()
-})
-
 const toast = useToast()
 
 type ResponseT = {
   message: string
 }
 const pending = ref(false)
-const onSubmit = async (event: FormSubmitEvent<TaskEdit>) => {
+const onSubmit = async (event: FormSubmitEvent<TaskCreate>) => {
   pending.value = true
 
   try {
-    const data = await $fetch<ResponseT>(`/api/tasks/${id}`, {
-      method: 'PUT',
+    const data = await $fetch<ResponseT>('/api/tasks', {
+      method: 'POST',
       body: event.data
     })
 
     toast.add({ title: data.message })
-    await navigateTo('/task')
+    await navigateTo('/tasks')
   } catch (error: any) {
     toast.add({ title: error.message })
   } finally {
@@ -66,9 +47,9 @@ const onSubmit = async (event: FormSubmitEvent<TaskEdit>) => {
 
 <template>
   <main>
-    <h1 class="text-2xl font-bold">Edit Task</h1>
+    <h1 class="text-2xl font-bold">Create Task</h1>
 
-    <UForm :schema="TaskEditSchema" :state="state" class="space-y-4 max-w-lg my-4" @submit="onSubmit">
+    <UForm :schema="TaskCreateSchema" :state="state" class="space-y-4 max-w-lg my-4" @submit="onSubmit">
       <UFormGroup label="Project" name="project_id">
         <SelectProject v-model="state.project_id" />
       </UFormGroup>
