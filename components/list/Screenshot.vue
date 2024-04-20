@@ -7,7 +7,7 @@ const props = defineProps<{
 
 // FETCH DATA
 const { data, pending, refresh } = await useLazyFetch(`/api/screenshots-self/${props.taskId}`, {
-  key: `screenshots-${props.taskId}`,
+  key: `screenshots-self-${props.taskId}`,
   default: () => [],
 })
 const isDataEmpty = computed(() => !data.value.length)

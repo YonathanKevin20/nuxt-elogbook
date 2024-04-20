@@ -2,10 +2,19 @@ import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
 import { and, asc, eq } from 'drizzle-orm'
+import sharp from 'sharp'
 
-const toBase64 = async (url: string) => {
+const resizeBase64Image = async (url: string) => {
   const data = await $fetch<Blob>(url)
-  const buffer = await data.arrayBuffer()
+  const arrayBuffer = await data.arrayBuffer()
+
+  const buffer = await sharp(arrayBuffer)
+  .jpeg({
+    mozjpeg: true,
+    quality: 40
+  })
+  .toBuffer()
+
   return `data:${data.type};base64,` + Buffer.from(buffer).toString('base64')
 }
 
@@ -42,14 +51,16 @@ export default defineEventHandler(async (event) => {
   .orderBy(asc(screenshots.createdAt))
 
   // Create array of objects with image and description properties for each screenshot
-  const images = await Promise.all(items.map(async (item) => {
+  const images = Promise.all(items.map(async (item) => {
     const { data } = await supabase.storage.from('task-screenshots').createSignedUrl(item.path, 120)
 
     if (data) {
+      const base64Image = await resizeBase64Image(data.signedUrl)
+
       return {
         path: item.path,
         description: item.description,
-        image: await toBase64(data.signedUrl),
+        image: base64Image,
       }
     }
 

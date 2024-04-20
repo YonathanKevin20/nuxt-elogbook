@@ -22,7 +22,7 @@ const activeClass = 'text-sky-700 font-bold';
           <ULink
             to="/tasks"
             :active-class="activeClass"
-            inactive-class="text-gray-500 hover:text-red-700">Task</ULink>
+            inactive-class="text-gray-500 hover:text-red-700">Tasks</ULink>
         </div>
         <Auth />
       </nav>

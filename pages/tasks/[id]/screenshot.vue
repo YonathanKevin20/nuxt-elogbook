@@ -4,7 +4,7 @@ import type { ScreenshotCreate } from '~/schemas/ScreenshotCreateSchema'
 import { ScreenshotCreateSchema } from '~/schemas/ScreenshotCreateSchema'
 
 useHead({
-  title: 'Screenshot'
+  title: 'Screenshots'
 })
 definePageMeta({
   middleware: 'auth'
@@ -36,9 +36,10 @@ const blobImage = ref<string | null>(null)
 const handleFile = async (event: Event) => {
   const target = <HTMLInputElement>event.target
   const file = target.files?.item(0)
-  const extension  = file?.name.split('.').pop()
 
   if (!file) return
+
+  const extension  = file.name.split('.').pop()
 
   blobImage.value = URL.createObjectURL(file)
   image.value = file
@@ -51,14 +52,26 @@ type ResponseT = {
 const toast = useToast()
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
+const { data: task } = useNuxtData(`tasks-self-${state.task_id}`)
 const pending = ref(false)
+const path = computed(() => {
+  const userId = user.value?.id
+  if (!userId) return ''
+
+  const implementedAt = task.value?.implemented_at
+  if (!implementedAt) return ''
+
+  const [year, month] = implementedAt.split('-')
+
+  return `${userId}/${year}/${month}/${imageName.value}`
+})
 const onSubmit = async (event: FormSubmitEvent<ScreenshotCreate>) => {
   if (!image.value) return
 
   pending.value = true
 
   try {
-    const { data: dataFile, error } = await supabase.storage.from('task-screenshots').upload(user.value?.id + '/' + imageName.value, image.value)
+    const { data: dataFile, error } = await supabase.storage.from('task-screenshots').upload(path.value, image.value)
     if (error) {
       throw createError({
         statusCode: 400,
@@ -74,7 +87,7 @@ const onSubmit = async (event: FormSubmitEvent<ScreenshotCreate>) => {
 
     toast.add({ title: data.message })
     resetState()
-    refreshNuxtData(`screenshots-${state.task_id}`)
+    refreshNuxtData(`screenshots-self-${state.task_id}`)
   } catch (error: any) {
     toast.add({ title: error.message })
   } finally {
@@ -85,7 +98,9 @@ const onSubmit = async (event: FormSubmitEvent<ScreenshotCreate>) => {
 
 <template>
   <main>
-    <h1 class="text-2xl font-bold">Screenshot</h1>
+    <h1 class="text-2xl font-bold">Screenshots</h1>
+
+    <CardTaskDetails :id="state.task_id" />
 
     <UForm :schema="ScreenshotCreateSchema" :state="state" class="space-y-4 max-w-lg my-4" @submit="onSubmit">
       <UFormGroup label="Image" name="path">

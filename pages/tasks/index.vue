@@ -2,7 +2,7 @@
 import { ModalDeleteTask } from '#components'
 
 useHead({
-  title: 'Task'
+  title: 'Tasks'
 })
 definePageMeta({
   middleware: 'auth'
@@ -56,11 +56,6 @@ const { data, pending, refresh } = await useLazyFetch('/api/tasks-self', {
   watch: [yearSelected, monthSelected],
 })
 
-const dateFormatted = (datetime: string) => {
-  if (!datetime) return ''
-  return dayjs(datetime).format('dddd, D MMMM YYYY')
-}
-
 const modal = useModal()
 const openModalDeleteTask = (id: number) => {
   modal.open(ModalDeleteTask, {
@@ -72,7 +67,7 @@ const openModalDeleteTask = (id: number) => {
 
 <template>
   <main>
-    <h1 class="text-2xl font-bold">Task</h1>
+    <h1 class="text-2xl font-bold">Tasks</h1>
 
     <div class="my-4">
       <UButton
