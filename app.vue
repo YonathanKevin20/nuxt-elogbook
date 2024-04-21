@@ -1,32 +1,34 @@
 <script setup lang="ts">
 useHead({
   titleTemplate: (titleChunk) => {
-    return titleChunk ? `${titleChunk} - elogbook` : 'elogbook';
+    return titleChunk ? `${titleChunk} - elogbook` : 'elogbook'
   }
 })
 
-const activeClass = 'text-sky-700 font-bold';
+const activeClass = 'text-sky-700 font-bold'
+const inactiveClass = 'text-gray-500 hover:text-red-700'
 </script>
 
 <template>
   <NuxtLoadingIndicator />
   <NuxtLayout>
-    <UContainer>
-      <nav class="flex justify-between">
+    <UContainer class="flex flex-col h-screen">
+      <nav class="flex justify-between items-center">
         <div>
           <ULink
             to="/"
             :active-class="activeClass"
-            inactive-class="text-gray-500 hover:text-red-700">Home</ULink>
+            :inactive-class="inactiveClass">Home</ULink>
           <span> | </span>
           <ULink
             to="/tasks"
             :active-class="activeClass"
-            inactive-class="text-gray-500 hover:text-red-700">Tasks</ULink>
+            :inactive-class="inactiveClass">Tasks</ULink>
         </div>
         <Auth />
       </nav>
       <NuxtPage />
+      <Footer />
     </UContainer>
     <UNotifications />
     <UModals />
