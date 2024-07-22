@@ -47,7 +47,7 @@ const actionItems = (row: { id: number, screenshots_count: number }) => [
 const dayjs = useDayjs()
 const yearSelected = ref(''+(dayjs().year()))
 const monthSelected = ref(''+(dayjs().month() + 1))
-const { data, pending, refresh } = await useLazyFetch('/api/tasks-self', {
+const { data, status, refresh } = await useLazyFetch('/api/tasks-self', {
   query: {
     year: yearSelected,
     month: monthSelected
@@ -83,7 +83,7 @@ const openModalDeleteTask = (id: number) => {
     </div>
 
     <UTable
-      :loading="pending"
+      :loading="status === 'pending'"
       :columns="columns"
       :rows="data">
       <template #id-data="{ index }">{{ index + 1 }}</template>

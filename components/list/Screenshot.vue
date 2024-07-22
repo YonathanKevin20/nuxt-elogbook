@@ -6,7 +6,7 @@ const props = defineProps<{
 }>()
 
 // FETCH DATA
-const { data, pending, refresh } = await useLazyFetch(`/api/screenshots-self/${props.taskId}`, {
+const { data, status, refresh } = await useLazyFetch(`/api/screenshots-self/${props.taskId}`, {
   key: `screenshots-self-${props.taskId}`,
   default: () => [],
 })
@@ -40,7 +40,7 @@ const openModalDeleteScreenshot = (path?: string) => {
         label="Delete Selected"
         color="red" />
     </div>
-    <LoadingState v-if="pending" />
+    <LoadingState v-if="status === 'pending'" />
     <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
       <p v-if="isDataEmpty">No screenshots</p>
       <CardScreenshot

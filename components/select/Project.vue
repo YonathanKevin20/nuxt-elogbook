@@ -1,14 +1,14 @@
 <script setup lang="ts">
 const model = defineModel<string>()
 
-const { data, pending, refresh } = await useLazyFetch('/api/projects', {
+const { data, status, refresh } = await useLazyFetch('/api/projects', {
   default: () => [],
 })
 </script>
 
 <template>
   <div>
-    <LoadingState v-if="pending" />
+    <LoadingState v-if="status === 'pending'" />
     <USelect
       v-else
       v-model="model"

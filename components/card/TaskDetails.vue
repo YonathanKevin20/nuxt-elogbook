@@ -4,7 +4,7 @@ const props = defineProps<{
 }>()
 
 // FETCH DATA
-const { data, pending, refresh } = await useLazyFetch(`/api/tasks-self/${props.id}`, {
+const { data, status, refresh } = await useLazyFetch(`/api/tasks-self/${props.id}`, {
   key: `tasks-self-${props.id}`,
   default: () => {
     return {
@@ -17,7 +17,7 @@ const { data, pending, refresh } = await useLazyFetch(`/api/tasks-self/${props.i
 
 <template>
   <div class="grid grid-cols-1 mt-2 p-2 border border-slate-400 rounded-lg">
-    <LoadingState v-if="pending" />
+    <LoadingState v-if="status === 'pending'" />
     <div v-else>
       <p class="font-bold">{{ dateFormatted(data.implemented_at) }}</p>
       <p v-if="!data.description">No description</p>
