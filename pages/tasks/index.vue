@@ -45,15 +45,15 @@ const actionItems = (row: { id: number, screenshots_count: number }) => [
 ]
 
 const dayjs = useDayjs()
-const yearSelected = ref(''+(dayjs().year()))
-const monthSelected = ref(''+(dayjs().month() + 1))
+const selectedYear = ref(''+(dayjs().year()))
+const selectedMonth = ref(''+(dayjs().month() + 1))
 const { data, status, refresh } = await useLazyFetch('/api/tasks-self', {
   query: {
-    year: yearSelected,
-    month: monthSelected
+    year: selectedYear,
+    month: selectedMonth
   },
   default: () => [],
-  watch: [yearSelected, monthSelected],
+  watch: [selectedYear, selectedMonth],
 })
 
 const modal = useModal()
@@ -69,17 +69,21 @@ const openModalDeleteTask = (id: number) => {
   <main>
     <h1 class="text-2xl font-bold">Tasks</h1>
 
-    <div class="my-4">
+    <div class="space-x-2 my-4">
       <UButton
         to="/tasks/create"
         label="Create"
         variant="solid"
         color="sky" />
+      <ButtonTaskExportExcel
+        :year="selectedYear"
+        :month="selectedMonth"
+        :data="data" />
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-x-4 my-4">
-      <ButtonMonth v-model="monthSelected" />
-      <SelectYear v-model="yearSelected" />
+      <ButtonMonth v-model="selectedMonth" />
+      <SelectYear v-model="selectedYear" />
     </div>
 
     <UTable
