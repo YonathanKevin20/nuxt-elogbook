@@ -12,7 +12,7 @@ const signOut = async () => {
 </script>
 
 <template>
-  <div>
+  <div class="ml-auto">
     <template v-if="user">
       <span class="text-sm">{{ user.email }}</span>
       <UButton

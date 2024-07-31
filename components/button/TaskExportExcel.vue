@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import xlsx from 'node-xlsx'
-import { type WorkSheetOptions } from 'node-xlsx'
+import type { WorkSheetOptions } from 'node-xlsx'
 
 const props = defineProps<{
   year: string,

@@ -1,6 +1,6 @@
-import { drizzle } from 'drizzle-orm/postgres-js'
-import postgres from 'postgres'
 import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
+import postgres from 'postgres'
+import { drizzle } from 'drizzle-orm/postgres-js'
 import { and, asc, eq } from 'drizzle-orm'
 import sharp from 'sharp'
 
@@ -19,7 +19,6 @@ const resizeBase64Image = async (url: string) => {
 }
 
 export default defineEventHandler(async (event) => {
-  const { databaseUrl } = useRuntimeConfig()
   const taskId = getRouterParam(event, 'taskId')
 
   if (!taskId) {
@@ -29,12 +28,14 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  const { databaseUrl } = useRuntimeConfig()
+
   // Disable prefetch as it is not supported for "Transaction" pool mode
   const client = postgres(databaseUrl, { prepare: false })
   const db = drizzle(client)
 
-  const user = await serverSupabaseUser(event)
   const supabase = await serverSupabaseClient(event)
+  const user = await serverSupabaseUser(event)
 
   const items = await db.select({
     path: screenshots.path,

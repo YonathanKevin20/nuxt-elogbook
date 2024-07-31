@@ -3,7 +3,6 @@ import postgres from 'postgres'
 import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
-  const { databaseUrl } = useRuntimeConfig()
   const id = getRouterParam(event, 'id')
 
   if (!id) {
@@ -12,6 +11,8 @@ export default defineEventHandler(async (event) => {
       message: 'Bad Request',
     })
   }
+
+  const { databaseUrl } = useRuntimeConfig()
 
   // Disable prefetch as it is not supported for "Transaction" pool mode
   const client = postgres(databaseUrl, { prepare: false })

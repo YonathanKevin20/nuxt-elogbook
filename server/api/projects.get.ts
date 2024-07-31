@@ -1,5 +1,5 @@
-import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
+import { drizzle } from 'drizzle-orm/postgres-js'
 
 export default defineCachedEventHandler(async (event) => {
   const { databaseUrl } = useRuntimeConfig()

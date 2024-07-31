@@ -1,6 +1,6 @@
-import { drizzle } from 'drizzle-orm/postgres-js'
-import postgres from 'postgres'
 import { serverSupabaseUser } from '#supabase/server'
+import postgres from 'postgres'
+import { drizzle } from 'drizzle-orm/postgres-js'
 import { and, desc, eq, gte, lte, sql } from 'drizzle-orm'
 import dayjs from 'dayjs'
 
@@ -15,7 +15,6 @@ const getDatetimeRange = (year: number, month: number) => {
 }
 
 export default defineEventHandler(async (event) => {
-  const { databaseUrl } = useRuntimeConfig()
   const query = getQuery(event)
 
   const year = query.year
@@ -29,6 +28,8 @@ export default defineEventHandler(async (event) => {
   }
 
   const { start, end } = getDatetimeRange(+year, +month)
+
+  const { databaseUrl } = useRuntimeConfig()
 
   // Disable prefetch as it is not supported for "Transaction" pool mode
   const client = postgres(databaseUrl, { prepare: false })

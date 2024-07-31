@@ -1,6 +1,6 @@
-import { drizzle } from 'drizzle-orm/postgres-js'
-import postgres from 'postgres'
 import { serverSupabaseUser } from '#supabase/server'
+import postgres from 'postgres'
+import { drizzle } from 'drizzle-orm/postgres-js'
 
 export default defineEventHandler(async (event) => {
   const { databaseUrl } = useRuntimeConfig()
