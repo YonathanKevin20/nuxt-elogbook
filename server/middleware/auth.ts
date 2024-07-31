@@ -3,8 +3,8 @@ import protectApi from '../protectApi'
 export default defineEventHandler(async (event) => {
   const { pathname } = getRequestURL(event)
 
-  const guestPaths = ['']
-  if (!pathname.startsWith('/api') && guestPaths.some((path) => pathname.includes(path))) {
+  const guestPaths = ['/api/_nuxt_icon/heroicons.json']
+  if (!pathname.startsWith('/api') || guestPaths.some((path) => pathname.includes(path))) {
     return
   }
 

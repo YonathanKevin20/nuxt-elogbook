@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   },
 
   dayjs: {
-    plugins: ['utc', 'timezone'],
+    plugins: ['timezone']
   },
 
   devtools: { enabled: true },
