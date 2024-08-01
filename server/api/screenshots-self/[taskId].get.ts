@@ -1,4 +1,4 @@
-import { serverSupabaseUser, serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 import postgres from 'postgres'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import { and, asc, eq } from 'drizzle-orm'

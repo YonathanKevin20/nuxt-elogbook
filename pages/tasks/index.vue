@@ -69,7 +69,7 @@ const openModalDeleteTask = (id: number) => {
   <main>
     <h1 class="text-2xl font-bold">Tasks</h1>
 
-    <div class="space-x-2 my-4">
+    <div class="flex items-center space-x-2 my-4">
       <UButton
         to="/tasks/create"
         label="Create"

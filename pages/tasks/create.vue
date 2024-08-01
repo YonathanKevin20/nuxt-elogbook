@@ -22,15 +22,12 @@ const state = reactive({
 
 const toast = useToast()
 
-type ResponseT = {
-  message: string
-}
 const pending = ref(false)
 const onSubmit = async (event: FormSubmitEvent<TaskCreate>) => {
   pending.value = true
 
   try {
-    const data = await $fetch<ResponseT>('/api/tasks', {
+    const data = await $fetch('/api/tasks', {
       method: 'POST',
       body: event.data
     })

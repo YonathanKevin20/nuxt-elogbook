@@ -5,9 +5,6 @@ const props = defineProps<{
 const modal = useModal()
 const toast = useToast()
 
-type ResponseT = {
-  message: string
-}
 const supabase = useSupabaseClient()
 const pending = ref(false)
 const deleteItem = async () => {
@@ -24,7 +21,7 @@ const deleteItem = async () => {
       })
     }
 
-    const data = await $fetch<ResponseT>('/api/screenshots', {
+    const data = await $fetch('/api/screenshots', {
       method: 'DELETE',
       body: {
         paths: props.selectedScreenshots
@@ -56,7 +53,7 @@ const emit = defineEmits<{
         </div>
       </template>
 
-      <p>Are you sure you want to delete this screenshot?</p>
+      <p>Are you sure you want to delete these screenshots?</p>
 
       <template #footer>
         <div class="flex justify-end space-x-4">

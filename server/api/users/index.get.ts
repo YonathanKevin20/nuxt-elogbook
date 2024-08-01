@@ -5,7 +5,7 @@ import { sql } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
-  const isAdmin = user!.user_metadata.app_role === 'admin'
+  const isAdmin = user!.app_metadata.role === 'admin'
 
   if (!isAdmin) {
     throw createError({
@@ -20,11 +20,22 @@ export default defineEventHandler(async (event) => {
   const client = postgres(databaseUrl, { prepare: false })
   const db = drizzle(client)
 
-  const items = await db.select({
-    email: users.email,
-    app_role: sql.raw(`raw_user_meta_data->>'app_role'`),
-  })
-  .from(users)
+  const items = await db.execute<{
+    id: string
+    full_name: string
+    role: string
+  }>(sql`
+    SELECT
+      auth.users.id,
+      full_name,
+      profiles.role
+    FROM
+      auth.users
+    INNER JOIN
+      profiles ON auth.users.id = profiles.id
+    ORDER BY
+      profiles.role, full_name
+  `)
 
   return items
 })
