@@ -41,15 +41,12 @@ onMounted(() => {
 
 const toast = useToast()
 
-type ResponseT = {
-  message: string
-}
 const pending = ref(false)
 const onSubmit = async (event: FormSubmitEvent<TaskEdit>) => {
   pending.value = true
 
   try {
-    const data = await $fetch<ResponseT>(`/api/tasks/${id}`, {
+    const data = await $fetch(`/api/tasks/${id}`, {
       method: 'PUT',
       body: event.data
     })

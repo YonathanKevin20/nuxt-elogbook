@@ -7,7 +7,7 @@ export default async (event: H3Event<EventHandlerRequest>) => {
   if (!session) {
     throw createError({
       statusCode: 401,
-      message: 'Unauthorized',
+      statusMessage: 'Unauthorized',
     })
   }
 }

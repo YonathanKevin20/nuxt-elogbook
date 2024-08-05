@@ -15,9 +15,10 @@ const deleteItem = async () => {
   try {
     const { error } = await supabase.storage.from('task-screenshots').remove(props.selectedScreenshots)
     if (error) {
+      console.error('Error deleting screenshot:', error.message)
       throw createError({
         statusCode: 400,
-        message: error.message
+        statusMessage: error.message
       })
     }
 

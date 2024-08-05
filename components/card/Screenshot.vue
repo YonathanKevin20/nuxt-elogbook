@@ -26,7 +26,10 @@ const downloadImage = async (path: string) => {
   const { data, error } = await supabase.storage.from('task-screenshots').download(path)
   if (error) {
     console.error('Error downloading image:', error.message)
-    return
+    throw createError({
+      statusCode: 400,
+      statusMessage: error.message
+    })
   }
 
   const url = URL.createObjectURL(data)

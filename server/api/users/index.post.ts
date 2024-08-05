@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   if (!isAdmin) {
     throw createError({
       statusCode: 403,
-      message: 'Forbidden',
+      statusMessage: 'Forbidden',
     })
   }
 
@@ -31,9 +31,10 @@ export default defineEventHandler(async (event) => {
   })
 
   if (error) {
+    console.error('Error creating user:', error)
     throw createError({
       statusCode: error.status,
-      message: error.message || 'Internal Server Error',
+      statusMessage: error.message || 'Internal Server Error',
     })
   }
 

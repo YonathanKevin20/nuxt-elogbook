@@ -14,15 +14,12 @@ const state = reactive({
   description: props.description || '',
 })
 
-type ResponseT = {
-  message: string
-}
 const pending = ref(false)
 const onSubmit = async (event: FormSubmitEvent<ScreenshotEdit>) => {
   pending.value = true
 
   try {
-    const data = await $fetch<ResponseT>(`/api/screenshots`, {
+    const data = await $fetch(`/api/screenshots`, {
       method: 'PUT',
       body: {
         path: props.path,

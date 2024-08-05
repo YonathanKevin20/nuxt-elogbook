@@ -1,6 +1,5 @@
 import { serverSupabaseUser } from '#supabase/server'
-import postgres from 'postgres'
-import { drizzle } from 'drizzle-orm/postgres-js'
+import { db } from '~/server/database/connection'
 import { sql } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
@@ -10,15 +9,9 @@ export default defineEventHandler(async (event) => {
   if (!isAdmin) {
     throw createError({
       statusCode: 403,
-      message: 'Forbidden',
+      statusMessage: 'Forbidden',
     })
   }
-
-  const { databaseUrl } = useRuntimeConfig()
-
-  // Disable prefetch as it is not supported for "Transaction" pool mode
-  const client = postgres(databaseUrl, { prepare: false })
-  const db = drizzle(client)
 
   const items = await db.execute<{
     id: string

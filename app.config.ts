@@ -3,5 +3,5 @@ export default defineAppConfig({
     primary: 'amber',
     gray: 'cool',
   },
-  nuxtIcon: {},
+  icon: {},
 })

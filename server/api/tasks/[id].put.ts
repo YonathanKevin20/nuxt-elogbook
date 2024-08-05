@@ -1,5 +1,4 @@
-import { drizzle } from 'drizzle-orm/postgres-js'
-import postgres from 'postgres'
+import { db } from '~/server/database/connection'
 import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
@@ -8,15 +7,9 @@ export default defineEventHandler(async (event) => {
   if (!id) {
     throw createError({
       statusCode: 400,
-      message: 'Bad Request',
+      statusMessage: 'Bad Request',
     })
   }
-
-  const { databaseUrl } = useRuntimeConfig()
-
-  // Disable prefetch as it is not supported for "Transaction" pool mode
-  const client = postgres(databaseUrl, { prepare: false })
-  const db = drizzle(client)
 
   const body = await readBody(event)
 
@@ -34,9 +27,10 @@ export default defineEventHandler(async (event) => {
       message: 'Task updated successfully',
     }
   } catch (error: any) {
+    console.error(error)
     throw createError({
       statusCode: error.status,
-      message: error.message || error.data?.message || 'Internal Server Error',
+      statusMessage: error.message || error.data?.message || 'Internal Server Error',
     })
   }
 })

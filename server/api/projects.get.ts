@@ -1,13 +1,6 @@
-import postgres from 'postgres'
-import { drizzle } from 'drizzle-orm/postgres-js'
+import { db } from '~/server/database/connection'
 
 export default defineCachedEventHandler(async (event) => {
-  const { databaseUrl } = useRuntimeConfig()
-
-  // Disable prefetch as it is not supported for "Transaction" pool mode
-  const client = postgres(databaseUrl, { prepare: false })
-  const db = drizzle(client)
-
   const items = await db.select({
     id: projects.id,
     name: projects.name,

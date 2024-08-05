@@ -46,9 +46,6 @@ const handleFile = async (event: Event) => {
   imageName.value = Date.now() + '.' + extension
 }
 
-type ResponseT = {
-  message: string
-}
 const toast = useToast()
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
@@ -75,12 +72,12 @@ const onSubmit = async (event: FormSubmitEvent<ScreenshotCreate>) => {
     if (error) {
       throw createError({
         statusCode: 400,
-        message: error.message
+        statusMessage: error.message
       })
     }
 
     state.path = dataFile.path
-    const data = await $fetch<ResponseT>('/api/screenshots', {
+    const data = await $fetch('/api/screenshots', {
       method: 'POST',
       body: event.data
     })

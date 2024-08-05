@@ -1,6 +1,5 @@
 import { serverSupabaseUser } from '#supabase/server'
-import postgres from 'postgres'
-import { drizzle } from 'drizzle-orm/postgres-js'
+import { db } from '~/server/database/connection'
 import { and, eq } from 'drizzle-orm'
 import dayjs from 'dayjs'
 
@@ -10,15 +9,9 @@ export default defineEventHandler(async (event) => {
   if (!id) {
     throw createError({
       statusCode: 400,
-      message: 'Bad Request',
+      statusMessage: 'Bad Request',
     })
   }
-
-  const { databaseUrl } = useRuntimeConfig()
-
-  // Disable prefetch as it is not supported for "Transaction" pool mode
-  const client = postgres(databaseUrl, { prepare: false })
-  const db = drizzle(client)
 
   const user = await serverSupabaseUser(event)
 
@@ -37,6 +30,13 @@ export default defineEventHandler(async (event) => {
     )
   )
   .limit(1)
+
+  if (items.length === 0) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Not Found',
+    })
+  }
 
   const item = items[0]
   item.implemented_at = dayjs(item.implemented_at).format('YYYY-MM-DD')

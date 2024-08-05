@@ -1,6 +1,5 @@
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
-import postgres from 'postgres'
-import { drizzle } from 'drizzle-orm/postgres-js'
+import { db } from '~/server/database/connection'
 import { and, asc, eq } from 'drizzle-orm'
 import sharp from 'sharp'
 
@@ -24,15 +23,9 @@ export default defineEventHandler(async (event) => {
   if (!taskId) {
     throw createError({
       statusCode: 400,
-      message: 'Bad Request',
+      statusMessage: 'Bad Request',
     })
   }
-
-  const { databaseUrl } = useRuntimeConfig()
-
-  // Disable prefetch as it is not supported for "Transaction" pool mode
-  const client = postgres(databaseUrl, { prepare: false })
-  const db = drizzle(client)
 
   const supabase = await serverSupabaseClient(event)
   const user = await serverSupabaseUser(event)
