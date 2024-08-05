@@ -4,7 +4,7 @@ const generatePassword = () => Math.random().toString(36).slice(-8)
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
-  const isAdmin = user!.app_metadata.role === 'admin'
+  const isAdmin = user!.user_metadata.role === 'admin'
 
   if (!isAdmin) {
     throw createError({
@@ -22,11 +22,9 @@ export default defineEventHandler(async (event) => {
     email: body.email,
     email_confirm: true,
     password,
-    app_metadata: {
-      role: body.role,
-    },
     user_metadata: {
       full_name: body.full_name,
+      role: body.role,
     }
   })
 

@@ -5,7 +5,7 @@ useHead({
   title: 'Employees'
 })
 definePageMeta({
-  middleware: 'auth'
+  middleware: ['auth', 'admin']
 })
 
 const columns = [{

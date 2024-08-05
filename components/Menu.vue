@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const user = useSupabaseUser()
 
-const isAdmin = computed(() => user.value.app_metadata.role === 'admin')
+const isAdmin = computed(() => user.value.user_metadata.role === 'admin')
 
 const activeClass = 'text-sky-700 font-bold'
 const inactiveClass = 'text-gray-500 hover:text-red-700'

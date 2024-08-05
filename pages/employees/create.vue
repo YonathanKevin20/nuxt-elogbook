@@ -7,7 +7,7 @@ useHead({
   title: 'Create Employee'
 })
 definePageMeta({
-  middleware: 'auth'
+  middleware: ['auth', 'admin']
 })
 
 const state = reactive({

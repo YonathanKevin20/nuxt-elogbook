@@ -2,7 +2,7 @@ import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
-  const isAdmin = user!.app_metadata.role === 'admin'
+  const isAdmin = user!.user_metadata.role === 'admin'
 
   if (!isAdmin) {
     throw createError({
