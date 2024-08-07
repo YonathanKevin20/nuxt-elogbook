@@ -20,6 +20,13 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  if (id === user!.id) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'You cannot delete yourself',
+    })
+  }
+
   const supabase = serverSupabaseServiceRole(event)
 
   const { data, error } = await supabase.auth.admin.deleteUser(id)

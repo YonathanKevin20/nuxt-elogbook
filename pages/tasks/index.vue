@@ -36,8 +36,9 @@ const actionItems = (row: { id: number, screenshots_count: number }) => [
   }, {
     label: `Screenshots (${row.screenshots_count})`,
     icon: 'i-heroicons-photo-20-solid',
-    click: () => navigateTo(`/tasks/${row.id}/screenshot`)
-  }], [{
+    click: () => navigateTo(`/tasks/${row.id}/screenshots`)
+  }],
+  [{
     label: 'Delete',
     icon: 'i-heroicons-trash-20-solid',
     click: () => openModalDeleteTask(row.id)

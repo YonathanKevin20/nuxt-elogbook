@@ -8,12 +8,17 @@ definePageMeta({
   middleware: ['auth', 'admin']
 })
 
+const user = useSupabaseUser()
+
+const isSelf = (id: string) => user.value?.id === id
+
 const columns = [{
   key: 'id',
   label: '#'
 }, {
   key: 'full_name',
-  label: 'FULL NAME'
+  label: 'FULL NAME',
+  sortable: true
 }, {
   key: 'role',
   label: 'ROLE',
@@ -29,10 +34,12 @@ const actionItems = (row: { id: string, full_name: string }) => [
   }, {
     label: 'Profile',
     icon: 'i-heroicons-user-circle-20-solid',
-  }], [{
+  }],
+  [{
     label: 'Delete',
     icon: 'i-heroicons-trash-20-solid',
-    click: () => openModalDeleteUser(row.id, row.full_name)
+    disabled: isSelf(row.id),
+    onClick: () => openModalDeleteUser(row.id, row.full_name)
   }]
 ]
 
@@ -65,7 +72,7 @@ const openModalDeleteUser = (id: string, full_name: string) => {
 
 <template>
   <main>
-    <h1 class="text-2xl font-bold">Employees List</h1>
+    <h1 class="text-2xl font-bold">Employees</h1>
 
     <div class="flex items-center justify-between space-x-2 my-4">
       <UButton
