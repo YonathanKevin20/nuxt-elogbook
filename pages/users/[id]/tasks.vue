@@ -8,6 +8,9 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const route = useRoute()
+const id = route.params.id
+
 const columns = [{
   key: 'id',
   label: '#'
@@ -48,7 +51,7 @@ const actionItems = (row: { id: number, screenshots_count: number }) => [
 const dayjs = useDayjs()
 const selectedYear = ref(''+(dayjs().year()))
 const selectedMonth = ref(''+(dayjs().month() + 1))
-const { data, status, refresh } = await useLazyFetch('/api/tasks-self', {
+const { data, status, refresh } = await useLazyFetch(`/api/users/${id}/tasks`, {
   query: {
     year: selectedYear,
     month: selectedMonth
@@ -64,11 +67,19 @@ const openModalDeleteTask = (id: number) => {
     onSuccess: () => refresh()
   })
 }
+
+const { data: user } = await useLazyFetch(`/api/users/${id}`, {
+  default: () => {
+    return {
+      full_name: ''
+    }
+  }
+})
 </script>
 
 <template>
   <main>
-    <h1 class="text-2xl font-bold">My Tasks</h1>
+    <h1 class="text-2xl font-bold">{{ apostrophe(user.full_name) }} Tasks</h1>
 
     <div class="flex items-center space-x-2 my-4">
       <UButton

@@ -31,6 +31,7 @@ const actionItems = (row: { id: string, full_name: string }) => [
   [{
     label: 'Tasks',
     icon: 'i-heroicons-numbered-list-20-solid',
+    click: () => isSelf(row.id) ? navigateTo('/tasks') : navigateTo(`/users/${row.id}/tasks`)
   }, {
     label: 'Profile',
     icon: 'i-heroicons-user-circle-20-solid',

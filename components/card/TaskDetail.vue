@@ -11,7 +11,7 @@ const { data, status, refresh } = await useLazyFetch(`/api/tasks-self/${props.id
       description: '',
       implemented_at: '',
     }
-  },
+  }
 })
 </script>
 

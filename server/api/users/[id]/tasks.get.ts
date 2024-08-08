@@ -1,4 +1,3 @@
-import { serverSupabaseUser } from '#supabase/server'
 import { db } from '~/server/database/connection'
 import { and, desc, eq, gte, lte, sql } from 'drizzle-orm'
 import dayjs from 'dayjs'
@@ -14,9 +13,10 @@ const getDatetimeRange = (year: number, month: number) => {
 }
 
 export default defineEventHandler(async (event) => {
+  const id = getRouterParam(event, 'id')
   const { year, month } = getQuery(event)
 
-  if (!year || !month) {
+  if (!id || !year || !month) {
     throw createError({
       statusCode: 400,
       statusMessage: 'Bad Request',
@@ -24,8 +24,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const { start, end } = getDatetimeRange(+year, +month)
-
-  const user = await serverSupabaseUser(event)
 
   const items = await db.select({
     id: tasks.id,
@@ -39,7 +37,7 @@ export default defineEventHandler(async (event) => {
   .innerJoin(projects, eq(tasks.projectId, projects.id))
   .where(
     and(
-      eq(tasks.userId, user!.id),
+      eq(tasks.userId, id),
       and(
         gte(tasks.implementedAt, start),
         lte(tasks.implementedAt, end)
