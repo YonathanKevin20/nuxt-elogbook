@@ -23,10 +23,12 @@ const columns = [{
   label: 'DESCRIPTION'
 }, {
   key: 'status',
-  label: 'STATUS'
+  label: 'STATUS',
+  class: 'w-48'
 }, {
   key: 'actions',
-  label: 'ACTIONS'
+  label: 'ACTIONS',
+  class: 'w-24'
 }]
 const actionItems = (row: { id: number, screenshots_count: number }) => [
   [{
@@ -64,6 +66,21 @@ const openModalDeleteTask = (id: number) => {
     onSuccess: () => refresh()
   })
 }
+
+const toast = useToast()
+
+const updateTaskStatus = async (id: number, status: string) => {
+  try {
+    const data = await $fetch(`/api/tasks/${id}`, {
+      method: 'PUT',
+      body: { status }
+    })
+
+    toast.add({ title: data.message })
+  } catch (error: any) {
+    toast.add({ title: error.message })
+  }
+}
 </script>
 
 <template>
@@ -90,14 +107,17 @@ const openModalDeleteTask = (id: number) => {
     <UTable
       :loading="status === 'pending'"
       :columns="columns"
-      :rows="data">
+      :rows="data"
+      class="min-h-full border-2 rounded-lg">
       <template #id-data="{ index }">{{ index + 1 }}</template>
       <template #implemented_at-data="{ row }">{{ dateFormatted(row.implemented_at) }}</template>
       <template #description-data="{ row }">
         <div class="max-w-lg truncate">{{ row.description }}</div>
       </template>
       <template #status-data="{ row }">
-        <span class="uppercase">{{ row.status }}</span>
+        <SelectMenuTaskStatus
+          v-model="row.status"
+          @change="updateTaskStatus(row.id, $event)" />
       </template>
       <template #actions-data="{ row }">
         <UDropdown :items="actionItems(row)">

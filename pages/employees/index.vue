@@ -22,10 +22,12 @@ const columns = [{
 }, {
   key: 'role',
   label: 'ROLE',
-  sortable: true
+  sortable: true,
+  class: 'w-48'
 }, {
   key: 'actions',
-  label: 'ACTIONS'
+  label: 'ACTIONS',
+  class: 'w-24'
 }]
 const actionItems = (row: { id: string, full_name: string }) => [
   [{
@@ -87,7 +89,8 @@ const openModalDeleteUser = (id: string, full_name: string) => {
     <UTable
       :loading="status === 'pending'"
       :columns="columns"
-      :rows="filteredRows">
+      :rows="filteredRows"
+      class="min-h-full border-2 rounded-lg">
       <template #id-data="{ index }">{{ index + 1 }}</template>
       <template #actions-data="{ row }">
         <UDropdown :items="actionItems(row)">

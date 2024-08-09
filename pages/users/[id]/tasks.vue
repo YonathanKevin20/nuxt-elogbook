@@ -26,10 +26,12 @@ const columns = [{
   label: 'DESCRIPTION'
 }, {
   key: 'status',
-  label: 'STATUS'
+  label: 'STATUS',
+  class: 'w-48'
 }, {
   key: 'actions',
-  label: 'ACTIONS'
+  label: 'ACTIONS',
+  class: 'w-24'
 }]
 const actionItems = (row: { id: number, screenshots_count: number }) => [
   [{
@@ -101,14 +103,15 @@ const { data: user } = await useLazyFetch(`/api/users/${id}`, {
     <UTable
       :loading="status === 'pending'"
       :columns="columns"
-      :rows="data">
+      :rows="data"
+      class="min-h-full border-2 rounded-lg">
       <template #id-data="{ index }">{{ index + 1 }}</template>
       <template #implemented_at-data="{ row }">{{ dateFormatted(row.implemented_at) }}</template>
       <template #description-data="{ row }">
         <div class="max-w-lg truncate">{{ row.description }}</div>
       </template>
       <template #status-data="{ row }">
-        <span class="uppercase">{{ row.status }}</span>
+        <BadgeTaskStatus :value="row.status" />
       </template>
       <template #actions-data="{ row }">
         <UDropdown :items="actionItems(row)">

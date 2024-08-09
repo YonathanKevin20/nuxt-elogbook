@@ -76,7 +76,7 @@ const onSubmit = async (event: FormSubmitEvent<TaskEdit>) => {
         <UTextarea v-model.trim="state.description" />
       </UFormGroup>
       <UFormGroup label="Status" name="status">
-        <SelectTaskStatus v-model="state.status" />
+        <SelectMenuTaskStatus v-model="state.status" />
       </UFormGroup>
       <UButton type="submit" label="Submit" :loading="pending" />
     </UForm>

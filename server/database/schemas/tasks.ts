@@ -1,5 +1,7 @@
 import { sql } from 'drizzle-orm'
-import { pgTable, bigserial, bigint, uuid, text, timestamp, date } from 'drizzle-orm/pg-core'
+import { bigint, bigserial, date, pgEnum, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+
+export const taskStatus = pgEnum('task_status', ['to_do', 'in_progress', 'done'])
 
 export const tasks = pgTable('tasks', {
   id: bigserial('id', { mode: 'number' }).primaryKey(),
@@ -9,7 +11,7 @@ export const tasks = pgTable('tasks', {
   projectId: bigint('project_id', { mode: 'number' }).notNull().references(() => projects.id),
   implementedAt: date('implemented_at', { mode: 'string' }).notNull(),
   description: text('description').notNull(),
-  status: text('status').notNull(),
+  status: taskStatus('status').notNull(),
 })
 
 export type SelectTask = typeof tasks.$inferSelect
