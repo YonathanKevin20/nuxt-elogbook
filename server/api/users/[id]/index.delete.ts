@@ -1,15 +1,10 @@
 import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
+import adminOnly from '~/server/adminOnly'
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event)
-  const isAdmin = user!.user_metadata.role === 'admin'
+  await adminOnly(event)
 
-  if (!isAdmin) {
-    throw createError({
-      statusCode: 403,
-      statusMessage: 'Forbidden',
-    })
-  }
+  const user = await serverSupabaseUser(event)
 
   const id = getRouterParam(event, 'id')
 

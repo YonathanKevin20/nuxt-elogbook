@@ -1,17 +1,10 @@
-import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
+import adminOnly from '~/server/adminOnly'
 
 const generatePassword = () => Math.random().toString(36).slice(-8)
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event)
-  const isAdmin = user!.user_metadata.role === 'admin'
-
-  if (!isAdmin) {
-    throw createError({
-      statusCode: 403,
-      statusMessage: 'Forbidden',
-    })
-  }
+  await adminOnly(event)
 
   const body = await readBody(event)
   const password = generatePassword()

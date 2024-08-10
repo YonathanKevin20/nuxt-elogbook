@@ -1,12 +1,25 @@
-import protectApi from '../protectApi'
+import type { H3Event } from 'h3'
+import { serverSupabaseSession } from '#supabase/server'
+
+const GUEST_PATHS = ['/api/_nuxt_icon/']
 
 export default defineEventHandler(async (event) => {
-  const { pathname } = getRequestURL(event)
+  const { path } = event
 
-  const guestPaths = ['/api/_nuxt_icon/']
-  if (!pathname.startsWith('/api') || guestPaths.some((path) => pathname.includes(path))) {
+  if (!path.startsWith('/api') || GUEST_PATHS.some((guestPath) => path.startsWith(guestPath))) {
     return
   }
 
   await protectApi(event)
 })
+
+const protectApi = async (event: H3Event) => {
+  const session = await serverSupabaseSession(event)
+
+  if (!session) {
+    throw createError({
+      statusCode: 401,
+      statusMessage: 'Unauthorized',
+    })
+  }
+}

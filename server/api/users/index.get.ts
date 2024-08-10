@@ -1,17 +1,9 @@
-import { serverSupabaseUser } from '#supabase/server'
 import { db } from '~/server/database/connection'
+import adminOnly from '~/server/adminOnly'
 import { sql } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event)
-  const isAdmin = user!.user_metadata.role === 'admin'
-
-  if (!isAdmin) {
-    throw createError({
-      statusCode: 403,
-      statusMessage: 'Forbidden',
-    })
-  }
+  await adminOnly(event)
 
   const items = await db.execute<{
     id: string
