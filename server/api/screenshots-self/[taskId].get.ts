@@ -49,12 +49,10 @@ export default defineEventHandler(async (event) => {
     const { data } = await supabase.storage.from('task-screenshots').createSignedUrl(item.path, 120)
 
     if (data) {
-      const base64Image = await resizeBase64Image(data.signedUrl)
-
       return {
         path: item.path,
         description: item.description,
-        image: base64Image,
+        image: data.signedUrl,
       }
     }
 

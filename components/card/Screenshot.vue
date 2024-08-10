@@ -21,6 +21,9 @@ const selectItem = (path: string) => {
     : [...model.value, path]
 }
 
+// IMAGE LOAD
+const { isLoaded, onLoad } = useImageLoad()
+
 const supabase = useSupabaseClient()
 const downloadImage = async (path: string) => {
   const { data, error } = await supabase.storage.from('task-screenshots').download(path)
@@ -58,10 +61,20 @@ const emit = defineEmits<{
 <template>
   <div class="border-2 border-slate-400 rounded-lg bg-sky-100 p-2 space-y-2">
     <UCheckbox v-model="model" :value="screenshot.path" />
-    <img
+    <div
       v-if="screenshot.image"
-      @click="selectItem(screenshot.path)"
-      class="object-scale-down h-40 rounded-lg mx-auto cursor-pointer hover:scale-110 transition duration-500" :src="screenshot.image" :alt="altText" />
+      class="relative grid place-items-center">
+      <div v-show="!isLoaded" class="absolute grid place-items-center">
+        <LoadingState />
+      </div>
+      <img
+        @click="selectItem(screenshot.path)"
+        @load="onLoad"
+        class="object-scale-down h-40 rounded-lg mx-auto cursor-pointer hover:scale-110 transition duration-500"
+        crossorigin="anonymous"
+        :src="screenshot.image"
+        :alt="altText" />
+    </div>
     <p class="min-h-12 text-sm border-b-2 border-slate-400 pb-2">{{ screenshot.description }}</p>
     <div class="space-x-2">
       <UButton
