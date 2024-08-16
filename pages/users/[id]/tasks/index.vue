@@ -1,15 +1,10 @@
 <script setup lang="ts">
-import { ModalDeleteTask } from '#components'
-
 useHead({
   title: 'Tasks'
 })
 definePageMeta({
   middleware: 'auth'
 })
-
-const route = useRoute()
-const id = route.params.id
 
 const columns = [{
   key: 'id',
@@ -35,24 +30,20 @@ const columns = [{
 }]
 const actionItems = (row: { id: number, screenshots_count: number }) => [
   [{
-    label: 'Edit',
-    icon: 'i-heroicons-pencil-square-20-solid',
-    click: () => navigateTo(`/tasks/${row.id}/edit`)
-  }, {
     label: `Screenshots (${row.screenshots_count})`,
     icon: 'i-heroicons-photo-20-solid',
-    click: () => navigateTo(`/tasks/${row.id}/screenshots`)
-  }],
-  [{
-    label: 'Delete',
-    icon: 'i-heroicons-trash-20-solid',
-    click: () => openModalDeleteTask(row.id)
+    click: () => user.value && navigateTo(`/users/${user.value.id}/tasks/${row.id}/screenshots`)
   }]
 ]
 
+const route = useRoute()
 const dayjs = useDayjs()
-const selectedYear = ref(''+(dayjs().year()))
-const selectedMonth = ref(''+(dayjs().month() + 1))
+const id = route.params.id
+
+const currentMonth = route.query.month ? ''+route.query.month : ''+(dayjs().month() + 1)
+const currentYear = route.query.year ? ''+route.query.year : ''+(dayjs().year())
+const selectedYear = ref(currentYear)
+const selectedMonth = ref(currentMonth)
 const { data, status, refresh } = await useLazyFetch(`/api/users/${id}/tasks`, {
   query: {
     year: selectedYear,
@@ -62,33 +53,18 @@ const { data, status, refresh } = await useLazyFetch(`/api/users/${id}/tasks`, {
   watch: [selectedYear, selectedMonth],
 })
 
-const modal = useModal()
-const openModalDeleteTask = (id: number) => {
-  modal.open(ModalDeleteTask, {
-    id,
-    onSuccess: () => refresh()
-  })
+const updateRouteQuery = async (key: string, value: string) => {
+  await navigateTo({ query: { ...route.query, [key]: value } })
 }
 
-const { data: user } = await useLazyFetch(`/api/users/${id}`, {
-  default: () => {
-    return {
-      full_name: ''
-    }
-  }
-})
+const { data: user } = await useLazyFetch(`/api/users/${id}`)
 </script>
 
 <template>
   <main>
-    <h1 class="text-2xl font-bold">{{ apostrophe(user.full_name) }} Tasks</h1>
+    <h1 class="text-2xl font-bold">{{ apostrophe(user?.full_name ?? '') }} Tasks</h1>
 
     <div class="flex items-center space-x-2 my-4">
-      <UButton
-        to="/tasks/create"
-        label="Create"
-        variant="solid"
-        color="sky" />
       <ButtonTaskExportExcel
         :year="selectedYear"
         :month="selectedMonth"
@@ -96,8 +72,12 @@ const { data: user } = await useLazyFetch(`/api/users/${id}`, {
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-x-4 my-4">
-      <ButtonMonth v-model="selectedMonth" />
-      <SelectYear v-model="selectedYear" />
+      <ButtonMonth
+        v-model="selectedMonth"
+        @change="updateRouteQuery('month', selectedMonth)" />
+      <SelectYear
+        v-model="selectedYear"
+        @change="updateRouteQuery('year', selectedYear)" />
     </div>
 
     <UTable

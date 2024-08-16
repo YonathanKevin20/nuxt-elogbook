@@ -1,12 +1,11 @@
 <script setup lang="ts">
 const props = defineProps<{
-  userId: string
   id: number
 }>()
 
 // FETCH DATA
-const { data, status } = await useLazyFetch(`/api/users/${props.userId}/tasks/${props.id}`, {
-  key: `users-${props.userId}-tasks-${props.id}`
+const { data, status } = await useLazyFetch(`/api/tasks-self/${props.id}`, {
+  key: `tasks-self-${props.id}`
 })
 </script>
 

@@ -2,9 +2,9 @@ import { db } from '~/server/database/connection'
 import { sql } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
-  const id = getRouterParam(event, 'id')
+  const userId = getRouterParam(event, 'userId')
 
-  if (!id) {
+  if (!userId) {
     throw createError({
       statusCode: 400,
       statusMessage: 'Bad Request',
@@ -25,15 +25,12 @@ export default defineEventHandler(async (event) => {
     INNER JOIN
       profiles ON auth.users.id = profiles.id
     WHERE
-      auth.users.id = ${id}
+      auth.users.id = ${userId}
     LIMIT 1
   `)
 
   if (items.length === 0) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: 'Not Found',
-    })
+    return null
   }
 
   const item = items[0]

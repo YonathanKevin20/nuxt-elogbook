@@ -6,6 +6,15 @@ const items = Array.from({ length: 12 }, (_, i) => ({
 }))
 
 const model = defineModel<string>()
+
+const selectItem = (value: string) => {
+  model.value = value
+  emit('change', value)
+}
+
+const emit = defineEmits<{
+  change: [string]
+}>()
 </script>
 
 <template>
@@ -15,6 +24,6 @@ const model = defineModel<string>()
       :key="item.value"
       :label="item.label"
       :variant="model === item.value ? 'solid' : 'ghost'"
-      @click="model = item.value" />
+      @click="selectItem(item.value)" />
   </div>
 </template>

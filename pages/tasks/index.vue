@@ -47,9 +47,13 @@ const actionItems = (row: { id: number, screenshots_count: number }) => [
   }]
 ]
 
+const route = useRoute()
 const dayjs = useDayjs()
-const selectedYear = ref(''+(dayjs().year()))
-const selectedMonth = ref(''+(dayjs().month() + 1))
+
+const currentMonth = route.query.month ? ''+route.query.month : ''+(dayjs().month() + 1)
+const currentYear = route.query.year ? ''+route.query.year : ''+(dayjs().year())
+const selectedYear = ref(currentYear)
+const selectedMonth = ref(currentMonth)
 const { data, status, refresh } = await useLazyFetch('/api/tasks-self', {
   query: {
     year: selectedYear,
@@ -58,6 +62,10 @@ const { data, status, refresh } = await useLazyFetch('/api/tasks-self', {
   default: () => [],
   watch: [selectedYear, selectedMonth],
 })
+
+const updateRouteQuery = async (key: string, value: string) => {
+  await navigateTo({ query: { ...route.query, [key]: value } })
+}
 
 const modal = useModal()
 const openModalDeleteTask = (id: number) => {
@@ -68,7 +76,6 @@ const openModalDeleteTask = (id: number) => {
 }
 
 const toast = useToast()
-
 const updateTaskStatus = async (id: number, status: string) => {
   try {
     const data = await $fetch(`/api/tasks/${id}`, {
@@ -100,8 +107,12 @@ const updateTaskStatus = async (id: number, status: string) => {
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-x-4 my-4">
-      <ButtonMonth v-model="selectedMonth" />
-      <SelectYear v-model="selectedYear" />
+      <ButtonMonth
+        v-model="selectedMonth"
+        @change="updateRouteQuery('month', selectedMonth)" />
+      <SelectYear
+        v-model="selectedYear"
+        @change="updateRouteQuery('year', selectedYear)" />
     </div>
 
     <UTable

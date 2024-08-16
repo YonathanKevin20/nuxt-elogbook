@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ModalEditScreenshotDescription } from '#components'
+
 const props = defineProps<{
   screenshot: {
     path: string
@@ -7,7 +9,17 @@ const props = defineProps<{
   }
 }>()
 
+const model = defineModel<string[]>()
+
 const altText = computed(() => props.screenshot.description || 'No description')
+
+const selectItem = (path: string) => {
+  if (!model.value) model.value = [path]
+
+  model.value = model.value.includes(path)
+    ? model.value.filter((p) => p !== path)
+    : [...model.value, path]
+}
 
 // IMAGE LOAD
 const { isLoaded, onLoad } = useImageLoad()
@@ -30,10 +42,25 @@ const downloadImage = async (path: string) => {
   a.click()
   URL.revokeObjectURL(url)
 }
+
+const modal = useModal()
+const openModalEditScreenshotDescription = (path: string, description: string | null) => {
+  modal.open(ModalEditScreenshotDescription, {
+    path,
+    description,
+    onSuccess: () => emit('refresh')
+  })
+}
+
+const emit = defineEmits<{
+  deleteItem: [path: string]
+  refresh: []
+}>()
 </script>
 
 <template>
   <div class="border-2 border-slate-400 rounded-lg bg-sky-100 p-2 space-y-2">
+    <UCheckbox v-model="model" :value="screenshot.path" />
     <div
       v-if="screenshot.image"
       class="relative grid place-items-center">
@@ -41,6 +68,7 @@ const downloadImage = async (path: string) => {
         <LoadingState />
       </div>
       <img
+        @click="selectItem(screenshot.path)"
         @load="onLoad"
         class="object-scale-down h-40 rounded-lg mx-auto cursor-pointer hover:scale-110 transition duration-500"
         crossorigin="anonymous"
@@ -54,6 +82,18 @@ const downloadImage = async (path: string) => {
         icon="i-heroicons-arrow-down-tray-20-solid"
         size="2xs"
         title="Download" />
+      <UButton
+        @click="openModalEditScreenshotDescription(screenshot.path, screenshot.description)"
+        icon="i-heroicons-pencil-20-solid"
+        color="sky"
+        size="2xs"
+        title="Edit" />
+      <UButton
+        @click="emit('deleteItem', screenshot.path)"
+        icon="i-heroicons-trash-20-solid"
+        color="red"
+        size="2xs"
+        title="Delete" />
     </div>
   </div>
 </template>

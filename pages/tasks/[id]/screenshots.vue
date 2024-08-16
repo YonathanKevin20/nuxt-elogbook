@@ -97,7 +97,7 @@ const onSubmit = async (event: FormSubmitEvent<ScreenshotCreate>) => {
   <main>
     <h1 class="text-2xl font-bold">Screenshots</h1>
 
-    <CardTaskDetail :id="state.task_id" />
+    <CardSelfTaskDetail :id="state.task_id" />
 
     <UForm :schema="ScreenshotCreateSchema" :state="state" class="space-y-4 max-w-lg my-4" @submit="onSubmit">
       <UFormGroup label="Image" name="path">
@@ -115,6 +115,6 @@ const onSubmit = async (event: FormSubmitEvent<ScreenshotCreate>) => {
       <UButton type="submit" label="Submit" :loading="pending" />
     </UForm>
 
-    <ListScreenshot :task-id="state.task_id" />
+    <ListSelfScreenshot :task-id="state.task_id" />
   </main>
 </template>

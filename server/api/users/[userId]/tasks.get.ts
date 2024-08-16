@@ -13,10 +13,10 @@ const getDatetimeRange = (year: number, month: number) => {
 }
 
 export default defineEventHandler(async (event) => {
-  const id = getRouterParam(event, 'id')
+  const userId = getRouterParam(event, 'userId')
   const { year, month } = getQuery(event)
 
-  if (!id || !year || !month) {
+  if (!userId || !year || !month) {
     throw createError({
       statusCode: 400,
       statusMessage: 'Bad Request',
@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
   .innerJoin(projects, eq(tasks.projectId, projects.id))
   .where(
     and(
-      eq(tasks.userId, id),
+      eq(tasks.userId, userId),
       and(
         gte(tasks.implementedAt, start),
         lte(tasks.implementedAt, end)

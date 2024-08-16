@@ -6,16 +6,16 @@ export default defineEventHandler(async (event) => {
 
   const user = await serverSupabaseUser(event)
 
-  const id = getRouterParam(event, 'id')
+  const userId = getRouterParam(event, 'userId')
 
-  if (!id) {
+  if (!userId) {
     throw createError({
       statusCode: 400,
       statusMessage: 'Bad Request',
     })
   }
 
-  if (id === user!.id) {
+  if (userId === user!.id) {
     throw createError({
       statusCode: 400,
       statusMessage: 'You cannot delete yourself',
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
 
   const supabase = serverSupabaseServiceRole(event)
 
-  const { data, error } = await supabase.auth.admin.deleteUser(id)
+  const { data, error } = await supabase.auth.admin.deleteUser(userId)
 
   if (error) {
     console.error('Error deleting user:', error)

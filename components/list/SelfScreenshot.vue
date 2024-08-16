@@ -2,13 +2,12 @@
 import { ModalDeleteScreenshot } from '#components'
 
 const props = defineProps<{
-  userId: string
   taskId: number
 }>()
 
 // FETCH DATA
-const { data, status, refresh } = await useLazyFetch(`/api/users/${props.userId}/screenshots/${props.taskId}`, {
-  key: `users-${props.userId}-screenshots-${props.taskId}`,
+const { data, status, refresh } = await useLazyFetch(`/api/screenshots-self/${props.taskId}`, {
+  key: `screenshots-self-${props.taskId}`,
   default: () => [],
 })
 const isEmpty = computed(() => !data.value.length)
@@ -35,10 +34,16 @@ const openModalDeleteScreenshot = (path?: string) => {
 <template>
   <div class="my-4">
     <h2 class="text-xl font-bold">List of Screenshots</h2>
+    <div class="grid justify-items-end">
+      <UButton
+        @click="openModalDeleteScreenshot()"
+        label="Delete Selected"
+        color="red" />
+    </div>
     <LoadingState v-if="status === 'pending'" />
     <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
       <p v-show="isEmpty">No screenshots</p>
-      <CardScreenshot
+      <CardSelfScreenshot
         v-for="(item, index) in data"
         :key="index"
         :screenshot="item"

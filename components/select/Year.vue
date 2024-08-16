@@ -4,13 +4,18 @@ const items = Array.from({ length: new Date().getFullYear() - 2023 }, (_, i) => 
   value: ''+(2024 + i)
 }))
 
-const model = defineModel<string>()
+const model = defineModel<string>({ required: true })
+
+const emit = defineEmits<{
+  change: [string]
+}>()
 </script>
 
 <template>
   <div class="col-span-1 justify-self-end">
     <USelect
       v-model="model"
+      @change="emit('change', model)"
       placeholder="Search..."
       :options="items"
       class="w-fit" />

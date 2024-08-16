@@ -1,4 +1,6 @@
-const apostrophe = (noun: string) => {
+const apostrophe = (noun: string | null) => {
+  if (!noun) return ''
+
   noun = noun.trim()
 
   if (noun.endsWith('s')) {

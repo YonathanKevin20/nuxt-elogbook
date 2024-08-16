@@ -1,5 +1,6 @@
-import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
+import { serverSupabaseClient } from '#supabase/server'
 import { db } from '~/server/database/connection'
+import adminOnly from '~/server/adminOnly'
 import { and, asc, eq } from 'drizzle-orm'
 import sharp from 'sharp'
 
@@ -18,9 +19,12 @@ const resizeBase64Image = async (url: string) => {
 }
 
 export default defineEventHandler(async (event) => {
+  await adminOnly(event)
+
+  const userId = getRouterParam(event, 'userId')
   const taskId = getRouterParam(event, 'taskId')
 
-  if (!taskId) {
+  if (!userId || !taskId) {
     throw createError({
       statusCode: 400,
       statusMessage: 'Bad Request',
@@ -28,7 +32,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const supabase = await serverSupabaseClient(event)
-  const user = await serverSupabaseUser(event)
 
   const items = await db.select({
     path: screenshots.path,
@@ -38,7 +41,7 @@ export default defineEventHandler(async (event) => {
   .innerJoin(tasks, eq(screenshots.taskId, tasks.id))
   .where(
     and(
-      eq(tasks.userId, user!.id),
+      eq(tasks.userId, userId),
       eq(tasks.id, +taskId)
     )
   )

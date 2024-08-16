@@ -26,10 +26,12 @@ const initState = async () => {
   try {
     const data = await $fetch(`/api/tasks-self/${id}`)
 
-    state.project_id = ''+data.project_id
-    state.implemented_at = data.implemented_at
-    state.description = data.description
-    state.status = data.status
+    if (data) {
+      state.project_id = ''+data.project_id
+      state.implemented_at = data.implemented_at
+      state.description = data.description
+      state.status = data.status
+    }
   } catch (error: any) {
     console.error(error)
   }
