@@ -49,7 +49,7 @@ const handleFile = async (event: Event) => {
 const toast = useToast()
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
-const { data: task } = useNuxtData(`tasks-self-${state.task_id}`)
+const { data: task } = useNuxtData(`self-tasks-${state.task_id}`)
 const pending = ref(false)
 const path = computed(() => {
   const userId = user.value?.id
@@ -84,7 +84,7 @@ const onSubmit = async (event: FormSubmitEvent<ScreenshotCreate>) => {
 
     toast.add({ title: data.message })
     resetState()
-    refreshNuxtData(`screenshots-self-${state.task_id}`)
+    refreshNuxtData(`self-screenshots-${state.task_id}`)
   } catch (error: any) {
     toast.add({ title: error.message })
   } finally {

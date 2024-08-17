@@ -4,8 +4,8 @@ const props = defineProps<{
 }>()
 
 // FETCH DATA
-const { data, status } = await useLazyFetch(`/api/tasks-self/${props.id}`, {
-  key: `tasks-self-${props.id}`
+const { data, status } = await useLazyFetch(`/api/self-tasks/${props.id}`, {
+  key: `self-tasks-${props.id}`
 })
 </script>
 

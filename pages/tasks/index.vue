@@ -54,7 +54,7 @@ const currentMonth = route.query.month ? ''+route.query.month : ''+(dayjs().mont
 const currentYear = route.query.year ? ''+route.query.year : ''+(dayjs().year())
 const selectedYear = ref(currentYear)
 const selectedMonth = ref(currentMonth)
-const { data, status, refresh } = await useLazyFetch('/api/tasks-self', {
+const { data, status, refresh } = await useLazyFetch('/api/self-tasks', {
   query: {
     year: selectedYear,
     month: selectedMonth

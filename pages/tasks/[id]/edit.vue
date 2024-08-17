@@ -24,7 +24,7 @@ const route = useRoute()
 const id = route.params.id
 const initState = async () => {
   try {
-    const data = await $fetch(`/api/tasks-self/${id}`)
+    const data = await $fetch(`/api/self-tasks/${id}`)
 
     if (data) {
       state.project_id = ''+data.project_id
