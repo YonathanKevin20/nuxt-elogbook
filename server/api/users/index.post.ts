@@ -1,5 +1,4 @@
 import { serverSupabaseServiceRole } from '#supabase/server'
-import adminOnly from '~/server/adminOnly'
 
 const generatePassword = () => Math.random().toString(36).slice(-8)
 

@@ -2,7 +2,7 @@
 import type { H3Event } from 'h3'
 import { serverSupabaseUser } from '#supabase/server'
 
-const adminOnly = async (event: H3Event) => {
+export const adminOnly = async (event: H3Event) => {
   const user = await serverSupabaseUser(event)
   const isAdmin = user!.user_metadata.role === 'admin'
 
@@ -13,5 +13,3 @@ const adminOnly = async (event: H3Event) => {
     })
   }
 }
-
-export default adminOnly

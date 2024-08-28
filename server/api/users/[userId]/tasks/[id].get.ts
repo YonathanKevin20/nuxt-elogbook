@@ -1,5 +1,4 @@
 import { db } from '~/server/database/connection'
-import adminOnly from '~/server/adminOnly'
 import { and, eq } from 'drizzle-orm'
 import dayjs from 'dayjs'
 

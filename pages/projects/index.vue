@@ -1,52 +1,39 @@
 <script setup lang="ts">
-import { ModalDeleteUser } from '#components'
+import { ModalDeleteProject } from '#components'
 
 useHead({
-  title: 'Employees'
+  title: 'Projects'
 })
 definePageMeta({
   middleware: ['auth', 'admin']
 })
 
-const user = useSupabaseUser()
-
-const isSelf = (id: string) => user.value?.id === id
-
 const columns = [{
   key: 'id',
   label: '#'
 }, {
-  key: 'full_name',
-  label: 'FULL NAME',
+  key: 'name',
+  label: 'NAME',
   sortable: true
-}, {
-  key: 'role',
-  label: 'ROLE',
-  sortable: true,
-  class: 'w-48'
 }, {
   key: 'actions',
   label: 'ACTIONS',
   class: 'w-24'
 }]
-const actionItems = (row: { id: string, full_name: string }) => [
+const actionItems = (row: { id: number, name: string }) => [
   [{
-    label: 'Tasks',
-    icon: 'i-heroicons-numbered-list-20-solid',
-    click: () => isSelf(row.id) ? navigateTo('/tasks') : navigateTo(`/users/${row.id}/tasks`)
-  }, {
-    label: 'Profile',
-    icon: 'i-heroicons-user-circle-20-solid',
+    label: 'Edit',
+    icon: 'i-heroicons-pencil-square-20-solid',
+    click: () => navigateTo(`/projects/${row.id}/edit`)
   }],
   [{
     label: 'Delete',
     icon: 'i-heroicons-trash-20-solid',
-    disabled: isSelf(row.id),
-    click: () => openModalDeleteUser(row.id, row.full_name)
+    click: () => openModalDeleteProject(row.id, row.name)
   }]
 ]
 
-const { data, status, refresh } = await useLazyFetch('/api/users', {
+const { data, status, refresh } = await useLazyFetch('/api/projects', {
   default: () => []
 })
 
@@ -64,10 +51,10 @@ const filteredRows = computed(() => {
 })
 
 const modal = useModal()
-const openModalDeleteUser = (id: string, full_name: string) => {
-  modal.open(ModalDeleteUser, {
+const openModalDeleteProject = (id: number, name: string) => {
+  modal.open(ModalDeleteProject, {
     id,
-    fullName: full_name,
+    name,
     onSuccess: () => refresh()
   })
 }
@@ -75,15 +62,15 @@ const openModalDeleteUser = (id: string, full_name: string) => {
 
 <template>
   <main>
-    <h1 class="text-2xl font-bold">Employees</h1>
+    <h1 class="text-2xl font-bold">Projects</h1>
 
     <div class="flex items-center justify-between space-x-2 my-4">
       <UButton
-        to="/employees/create"
+        to="/projects/create"
         label="Create"
         variant="solid"
         color="sky" />
-      <UInput v-model="q" class="w-1/2 xl:w-1/5" placeholder="Search employee..." />
+      <UInput v-model="q" class="w-1/2 xl:w-1/5" placeholder="Search project..." />
     </div>
 
     <UTable

@@ -1,5 +1,4 @@
 import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
-import adminOnly from '~/server/adminOnly'
 
 export default defineEventHandler(async (event) => {
   await adminOnly(event)

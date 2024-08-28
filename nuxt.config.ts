@@ -1,5 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  ssr: false,
+
   build: {
     transpile: ['@vuepic/vue-datepicker']
   },
@@ -18,6 +20,7 @@ export default defineNuxtConfig({
     imports: {
       dirs: [
         './server/database/schemas',
+        './server/utils',
       ]
     }
   },

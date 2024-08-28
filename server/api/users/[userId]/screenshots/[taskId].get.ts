@@ -1,6 +1,5 @@
 import { serverSupabaseClient } from '#supabase/server'
 import { db } from '~/server/database/connection'
-import adminOnly from '~/server/adminOnly'
 import { and, asc, eq } from 'drizzle-orm'
 import sharp from 'sharp'
 

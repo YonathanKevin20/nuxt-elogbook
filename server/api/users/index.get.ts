@@ -1,5 +1,4 @@
 import { db } from '~/server/database/connection'
-import adminOnly from '~/server/adminOnly'
 import { sql } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
