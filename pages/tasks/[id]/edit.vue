@@ -69,7 +69,7 @@ const onSubmit = async (event: FormSubmitEvent<TaskEdit>) => {
 
     <UForm :schema="TaskEditSchema" :state="state" class="space-y-4 max-w-lg my-4" @submit="onSubmit">
       <UFormGroup label="Project" name="project_id">
-        <SelectProject v-model="state.project_id" />
+        <SelectMenuProject v-model="state.project_id" />
       </UFormGroup>
       <UFormGroup label="Date" name="implemented_at">
         <DatePicker v-model="state.implemented_at" />

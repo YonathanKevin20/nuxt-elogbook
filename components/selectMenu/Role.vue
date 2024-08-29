@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const items = [
+const options = [
   { label: 'ADMIN', value: 'admin'},
   { label: 'STAFF', value: 'staff'}
 ]
@@ -8,8 +8,10 @@ const model = defineModel<string>()
 </script>
 
 <template>
-  <USelect
+  <USelectMenu
     v-model="model"
     placeholder="Search..."
-    :options="items" />
+    value-attribute="value"
+    :options="options"
+    option-attribute="label" />
 </template>

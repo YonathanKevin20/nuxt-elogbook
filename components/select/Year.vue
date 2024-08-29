@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const items = Array.from({ length: new Date().getFullYear() - 2023 }, (_, i) => ({
+const options = Array.from({ length: new Date().getFullYear() - 2023 }, (_, i) => ({
   label: ''+(2024 + i),
   value: ''+(2024 + i)
 }))
@@ -17,7 +17,7 @@ const emit = defineEmits<{
       v-model="model"
       @change="emit('change', model)"
       placeholder="Search..."
-      :options="items"
+      :options="options"
       class="w-fit" />
   </div>
 </template>

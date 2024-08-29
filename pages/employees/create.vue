@@ -76,7 +76,7 @@ const copyPassword = () => {
         </template>
       </UAlert>
       <UFormGroup label="Role" name="role">
-        <SelectRole v-model="state.role" />
+        <SelectMenuRole v-model="state.role" />
       </UFormGroup>
       <UFormGroup label="Email" name="email">
         <UInput v-model="state.email" type="email" />

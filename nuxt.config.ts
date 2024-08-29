@@ -20,7 +20,6 @@ export default defineNuxtConfig({
     imports: {
       dirs: [
         './server/database/schemas',
-        './server/utils',
       ]
     }
   },
