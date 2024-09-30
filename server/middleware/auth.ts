@@ -1,12 +1,17 @@
 import type { H3Event } from 'h3'
 import { serverSupabaseSession } from '#supabase/server'
 
-const GUEST_PATHS = ['/api/_nuxt_icon/']
+const GUEST_APIS = [
+  {
+    method: 'GET',
+    path: '/api/_nuxt_icon/'
+  }
+]
 
 export default defineEventHandler(async (event) => {
-  const { path } = event
+  const { method, path } = event
 
-  if (!path.startsWith('/api') || GUEST_PATHS.some((guestPath) => path.startsWith(guestPath))) {
+  if (!path.startsWith('/api') || GUEST_APIS.some((api) => method === api.method && path.startsWith(api.path))) {
     return
   }
 

@@ -82,7 +82,7 @@ const copyPassword = () => {
         <UInput v-model="state.email" type="email" />
       </UFormGroup>
       <UFormGroup label="Full Name" name="full_name">
-        <UInput v-model="state.full_name" type="text" />
+        <UInput v-model="state.full_name" />
       </UFormGroup>
       <UButton type="submit" label="Submit" :loading="pending" />
     </UForm>

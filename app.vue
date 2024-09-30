@@ -7,6 +7,7 @@ useHead({
 </script>
 
 <template>
+  <NuxtRouteAnnouncer />
   <NuxtLoadingIndicator />
   <NuxtLayout>
     <UContainer class="flex flex-col h-screen">

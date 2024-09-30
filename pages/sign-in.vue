@@ -16,11 +16,11 @@ const state = reactive({
 })
 watchEffect(() => {
   if (state.email.length > 0 && state.password.length > 0) {
-    errorMessages.value = ''
+    errorMessage.value = ''
   }
 })
 const hidePassword = ref(true)
-const errorMessages = ref('')
+const errorMessage = ref('')
 const pending = ref(false)
 
 const supabase = useSupabaseClient()
@@ -31,7 +31,7 @@ const onSubmit = async (event: FormSubmitEvent<SignIn>) => {
     const { error } = await supabase.auth.signInWithPassword(event.data)
 
     if (error) {
-      errorMessages.value = error.message
+      errorMessage.value = error.message
 
       return
     }
@@ -51,10 +51,10 @@ const onSubmit = async (event: FormSubmitEvent<SignIn>) => {
 
     <UForm :schema="SignInSchema" :state="state" class="space-y-4 max-w-lg my-4" @submit="onSubmit">
       <UAlert
-        v-if="errorMessages"
+        v-if="errorMessage"
         color="red"
         variant="soft"
-        :title="errorMessages" />
+        :title="errorMessage" />
       <UFormGroup label="Email" name="email">
         <UInput v-model="state.email" type="email" />
       </UFormGroup>

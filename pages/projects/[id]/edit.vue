@@ -60,7 +60,7 @@ const onSubmit = async (event: FormSubmitEvent<ProjectEdit>) => {
 
     <UForm :schema="ProjectEditSchema" :state="state" class="space-y-4 max-w-lg my-4" @submit="onSubmit">
       <UFormGroup label="Name" name="name">
-        <UInput v-model="state.name" type="text" />
+        <UInput v-model="state.name" />
       </UFormGroup>
       <UButton type="submit" label="Submit" :loading="pending" />
     </UForm>
