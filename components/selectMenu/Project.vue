@@ -2,8 +2,7 @@
 const model = defineModel<string>()
 
 const { data, status, refresh } = await useLazyFetch('/api/projects', {
-  default: () => [],
-  transform: (projects) => projects.map(project => ({ id: ''+project.id, name: project.name }))
+  default: () => []
 })
 </script>
 
@@ -14,7 +13,7 @@ const { data, status, refresh } = await useLazyFetch('/api/projects', {
       v-else
       v-model="model"
       placeholder="Search..."
-      value-attribute="id"
+      value-attribute="name"
       :options="data"
       option-attribute="name" />
   </div>

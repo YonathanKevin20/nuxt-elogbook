@@ -21,14 +21,14 @@ const inactiveClass = 'text-gray-500 hover:text-red-700'
     <template v-if="isAdmin">
       <span> | </span>
       <ULink
-        to="/employees"
-        :active-class="activeClass"
-        :inactive-class="inactiveClass">Employees</ULink>
-      <span> | </span>
-      <ULink
         to="/projects"
         :active-class="activeClass"
         :inactive-class="inactiveClass">Projects</ULink>
+      <span> | </span>
+      <ULink
+        to="/employees"
+        :active-class="activeClass"
+        :inactive-class="inactiveClass">Employees</ULink>
     </template>
   </div>
 </template>

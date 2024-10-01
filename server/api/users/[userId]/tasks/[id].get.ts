@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
 
   const items = await db.select({
     id: tasks.id,
-    project_id: tasks.projectId,
+    project_name: tasks.projectName,
     implemented_at: tasks.implementedAt,
     description: tasks.description,
     status: tasks.status,

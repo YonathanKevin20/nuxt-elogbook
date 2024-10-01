@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     await db.insert(tasks)
     .values({
       userId: user!.id,
-      projectId: body.project_id,
+      projectName: body.project_name,
       implementedAt: body.implemented_at,
       description: body.description,
       status: body.status,

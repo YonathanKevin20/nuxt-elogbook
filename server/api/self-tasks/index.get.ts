@@ -29,14 +29,13 @@ export default defineEventHandler(async (event) => {
 
   const items = await db.select({
     id: tasks.id,
-    project_name: projects.name,
+    project_name: tasks.projectName,
     implemented_at: tasks.implementedAt,
     description: tasks.description,
     status: tasks.status,
     screenshots_count: sql.raw('(SELECT COUNT(*) FROM screenshots WHERE task_id = tasks.id) AS screenshots_count'),
   })
   .from(tasks)
-  .innerJoin(projects, eq(tasks.projectId, projects.id))
   .where(
     and(
       eq(tasks.userId, user!.id),

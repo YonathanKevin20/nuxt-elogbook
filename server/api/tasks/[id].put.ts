@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
   try {
     await db.update(tasks)
     .set({
-      projectId: body.project_id,
+      projectName: body.project_name,
       implementedAt: body.implemented_at,
       description: body.description,
       status: body.status,

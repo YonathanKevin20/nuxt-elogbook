@@ -14,7 +14,7 @@ const dayjs = useDayjs()
 const dateNow = dayjs().format('YYYY-MM-DD')
 
 const state = reactive({
-  project_id: '',
+  project_name: '',
   implemented_at: dateNow,
   description: '',
   status: '',
@@ -27,7 +27,7 @@ const initState = async () => {
     const data = await $fetch(`/api/self-tasks/${id}`)
 
     if (data) {
-      state.project_id = ''+data.project_id
+      state.project_name = ''+data.project_name
       state.implemented_at = data.implemented_at
       state.description = data.description
       state.status = data.status
@@ -68,8 +68,8 @@ const onSubmit = async (event: FormSubmitEvent<TaskEdit>) => {
     <h1 class="text-2xl font-bold">Edit Task</h1>
 
     <UForm :schema="TaskEditSchema" :state="state" class="space-y-4 max-w-lg my-4" @submit="onSubmit">
-      <UFormGroup label="Project" name="project_id">
-        <SelectMenuProject v-model="state.project_id" />
+      <UFormGroup label="Project" name="project_name">
+        <SelectMenuProject v-model="state.project_name" />
       </UFormGroup>
       <UFormGroup label="Date" name="implemented_at">
         <DatePicker v-model="state.implemented_at" />
