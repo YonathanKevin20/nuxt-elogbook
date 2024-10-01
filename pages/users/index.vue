@@ -2,7 +2,7 @@
 import { ModalDeleteUser } from '#components'
 
 useHead({
-  title: 'Employees'
+  title: 'Users'
 })
 definePageMeta({
   middleware: ['auth', 'admin']
@@ -15,6 +15,10 @@ const isSelf = (id: string) => user.value?.id === id
 const columns = [{
   key: 'id',
   label: '#'
+}, {
+  key: 'email',
+  label: 'EMAIL',
+  sortable: true
 }, {
   key: 'full_name',
   label: 'FULL NAME',
@@ -34,9 +38,6 @@ const actionItems = (row: { id: string, full_name: string }) => [
     label: 'Tasks',
     icon: 'i-heroicons-numbered-list-20-solid',
     click: () => isSelf(row.id) ? navigateTo('/tasks') : navigateTo(`/users/${row.id}/tasks`)
-  }, {
-    label: 'Profile',
-    icon: 'i-heroicons-user-circle-20-solid',
   }],
   [{
     label: 'Delete',
@@ -71,19 +72,33 @@ const openModalDeleteUser = (id: string, full_name: string) => {
     onSuccess: () => refresh()
   })
 }
+
+const toast = useToast()
+const updateRole = async (id: number, role: string) => {
+  try {
+    const data = await $fetch(`/api/users/${id}`, {
+      method: 'PUT',
+      body: { role }
+    })
+
+    toast.add({ title: data.message })
+  } catch (error: any) {
+    toast.add({ title: error.message })
+  }
+}
 </script>
 
 <template>
   <main>
-    <h1 class="text-2xl font-bold">Employees</h1>
+    <h1 class="text-2xl font-bold">Users</h1>
 
     <div class="flex items-center justify-between space-x-2 my-4">
       <UButton
-        to="/employees/create"
+        to="/users/create"
         label="Create"
         variant="solid"
         color="sky" />
-      <UInput v-model="q" class="w-1/2 xl:w-1/5" placeholder="Search employee..." />
+      <UInput v-model="q" class="w-1/2 xl:w-1/5" placeholder="Search user..." />
     </div>
 
     <UTable
@@ -92,6 +107,13 @@ const openModalDeleteUser = (id: string, full_name: string) => {
       :rows="filteredRows"
       class="min-h-full border-2 rounded-lg">
       <template #id-data="{ index }">{{ index + 1 }}</template>
+      <template #role-data="{ row }">
+        <SelectMenuRole
+          v-if="!isSelf(row.id)"
+          v-model="row.role"
+          @change="updateRole(row.id, $event)" />
+        <span v-else>{{ row.role.toUpperCase() }}</span>
+      </template>
       <template #actions-data="{ row }">
         <UDropdown :items="actionItems(row)">
           <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />

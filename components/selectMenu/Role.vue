@@ -5,11 +5,16 @@ const options = [
 ]
 
 const model = defineModel<string>()
+
+const emit = defineEmits<{
+  change: [string]
+}>()
 </script>
 
 <template>
   <USelectMenu
     v-model="model"
+    @change="emit('change', $event)"
     placeholder="Search..."
     value-attribute="value"
     :options="options"

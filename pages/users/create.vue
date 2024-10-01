@@ -4,7 +4,7 @@ import type { UserCreate } from '~/schemas/UserCreateSchema'
 import { UserCreateSchema } from '~/schemas/UserCreateSchema'
 
 useHead({
-  title: 'Create Employee'
+  title: 'Create User'
 })
 definePageMeta({
   middleware: ['auth', 'admin']
@@ -48,7 +48,7 @@ const copyPassword = () => {
 
 <template>
   <main>
-    <h1 class="text-2xl font-bold">Create Employee</h1>
+    <h1 class="text-2xl font-bold">Create User</h1>
 
     <UForm :schema="UserCreateSchema" :state="state" class="space-y-4 max-w-lg my-4" @submit="onSubmit">
       <UAlert

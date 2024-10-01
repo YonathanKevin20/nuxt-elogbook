@@ -26,9 +26,9 @@ const inactiveClass = 'text-gray-500 hover:text-red-700'
         :inactive-class="inactiveClass">Projects</ULink>
       <span> | </span>
       <ULink
-        to="/employees"
+        to="/users"
         :active-class="activeClass"
-        :inactive-class="inactiveClass">Employees</ULink>
+        :inactive-class="inactiveClass">Users</ULink>
     </template>
   </div>
 </template>

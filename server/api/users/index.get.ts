@@ -6,11 +6,13 @@ export default defineEventHandler(async (event) => {
 
   const items = await db.execute<{
     id: string
+    email: string
     full_name: string
     role: string
   }>(sql`
     SELECT
       auth.users.id,
+      auth.users.email,
       full_name,
       profiles.role
     FROM
