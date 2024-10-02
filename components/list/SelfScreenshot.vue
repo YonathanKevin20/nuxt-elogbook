@@ -38,7 +38,8 @@ const openModalDeleteScreenshot = (path?: string) => {
       <UButton
         @click="openModalDeleteScreenshot()"
         label="Delete Selected"
-        color="red" />
+        color="red"
+        :disabled="!selectedScreenshots.length" />
     </div>
     <LoadingState v-if="status === 'pending'" />
     <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">

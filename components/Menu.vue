@@ -3,7 +3,7 @@ const user = useSupabaseUser()
 
 const isAdmin = computed(() => user.value?.user_metadata.role === 'admin')
 
-const activeClass = 'text-sky-700 font-bold'
+const activeClass = 'text-sky-700 font-medium'
 const inactiveClass = 'text-gray-500 hover:text-red-700'
 </script>
 

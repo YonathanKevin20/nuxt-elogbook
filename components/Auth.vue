@@ -14,7 +14,11 @@ const signOut = async () => {
 <template>
   <div class="ml-auto">
     <template v-if="user">
-      <span class="text-sm">{{ user.email }}</span>
+      <ULink
+        :to="`/users/${user.id}/profile`"
+        class="text-sm"
+        active-class="font-medium"
+        inactive-class="underline-offset-4 hover:underline">{{ user.email }}</ULink>
       <UButton
         @click="signOut"
         label="Sign Out"

@@ -86,7 +86,7 @@ const onSubmit = async (event: FormSubmitEvent<ScreenshotCreate>) => {
     resetState()
     refreshNuxtData(`self-screenshots-${state.task_id}`)
   } catch (error: any) {
-    toast.add({ title: error.message })
+    toast.add({ title: error.data.message })
   } finally {
     pending.value = false
   }

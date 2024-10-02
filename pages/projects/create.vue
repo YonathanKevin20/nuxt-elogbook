@@ -29,7 +29,7 @@ const onSubmit = async (event: FormSubmitEvent<ProjectCreate>) => {
     toast.add({ title: data.message })
     await navigateTo('/projects')
   } catch (error: any) {
-    toast.add({ title: error.message })
+    toast.add({ title: error.data.message })
   } finally {
     pending.value = false
   }

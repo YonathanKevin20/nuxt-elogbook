@@ -2,6 +2,8 @@ import { db } from '~/server/database/connection'
 import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
+  await adminOnly(event)
+
   const userId = getRouterParam(event, 'userId')
 
   if (!userId) {
@@ -16,13 +18,12 @@ export default defineEventHandler(async (event) => {
   try {
     await db.update(profiles)
     .set({
-      fullName: body.full_name,
       role: body.role,
     })
     .where(eq(profiles.id, userId))
 
     return {
-      message: 'Task updated successfully',
+      message: 'Profile updated successfully',
     }
   } catch (error: any) {
     console.error(error)

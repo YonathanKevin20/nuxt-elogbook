@@ -35,7 +35,7 @@ const onSubmit = async (event: FormSubmitEvent<TaskCreate>) => {
     toast.add({ title: data.message })
     await navigateTo('/tasks')
   } catch (error: any) {
-    toast.add({ title: error.message })
+    toast.add({ title: error.data.message })
   } finally {
     pending.value = false
   }

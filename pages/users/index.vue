@@ -83,7 +83,7 @@ const updateRole = async (id: number, role: string) => {
 
     toast.add({ title: data.message })
   } catch (error: any) {
-    toast.add({ title: error.message })
+    toast.add({ title: error.data.message })
   }
 }
 </script>

@@ -31,7 +31,7 @@ const onSubmit = async (event: FormSubmitEvent<UserCreate>) => {
     toast.add({ title: data.message })
     password.value = data.password
   } catch (error: any) {
-    toast.add({ title: error.message })
+    toast.add({ title: error.data.message })
   } finally {
     pending.value = false
   }
@@ -59,7 +59,7 @@ const copyPassword = () => {
         <template #description>
           <div class="flex items-center space-x-2">
             <UInput
-              :value="password"
+              :model-value="password"
               class="w-full"
               readonly
               :ui="{ icon: { trailing: { pointer: '' } } }">

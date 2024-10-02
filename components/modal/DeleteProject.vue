@@ -19,7 +19,7 @@ const deleteItem = async () => {
     emit('success')
     modal.close()
   } catch (error: any) {
-    toast.add({ title: error.message })
+    toast.add({ title: error.data.message })
   } finally {
     pending.value = false
   }
