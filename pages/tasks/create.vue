@@ -54,7 +54,7 @@ const onSubmit = async (event: FormSubmitEvent<TaskCreate>) => {
         <DatePicker v-model="state.implemented_at" />
       </UFormGroup>
       <UFormGroup label="Description" name="description">
-        <UTextarea v-model.trim="state.description" />
+        <UTextarea v-model="state.description" />
       </UFormGroup>
       <UFormGroup label="Status" name="status">
         <SelectMenuTaskStatus v-model="state.status" />

@@ -53,7 +53,7 @@ const emit = defineEmits<{
       </template>
 
       <UFormGroup label="Description" name="description">
-        <UTextarea v-model.trim="state.description" />
+        <UTextarea v-model="state.description" />
       </UFormGroup>
 
       <template #footer>

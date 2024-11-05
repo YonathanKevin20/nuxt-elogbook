@@ -110,7 +110,7 @@ const onSubmit = async (event: FormSubmitEvent<ScreenshotCreate>) => {
         </div>
       </UFormGroup>
       <UFormGroup label="Description" name="description">
-        <UTextarea v-model.trim="state.description" />
+        <UTextarea v-model="state.description" />
       </UFormGroup>
       <UButton type="submit" label="Submit" :loading="pending" />
     </UForm>

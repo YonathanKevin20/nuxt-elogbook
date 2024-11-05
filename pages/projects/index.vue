@@ -43,7 +43,7 @@ const filteredRows = computed(() => {
     return data.value
   }
 
-  return data.value.filter((item) => {
+  return data.value?.filter((item) => {
     return Object.values(item).some((value) => {
       return String(value).toLowerCase().includes(q.value.toLowerCase())
     })

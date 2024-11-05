@@ -9,7 +9,10 @@ const props = defineProps<{
 }>()
 const dayjs = useDayjs()
 
+const pending = ref(false)
 const exportExcel = () => {
+  pending.value = true
+
   const convertedArray = props.data.map((d, index) => [
     index + 1,
     d.project_name,
@@ -45,6 +48,8 @@ const exportExcel = () => {
   a.click()
   a.remove()
   URL.revokeObjectURL(url)
+
+  pending.value = false
 }
 </script>
 
@@ -53,5 +58,6 @@ const exportExcel = () => {
     label="Export Excel"
     variant="outline"
     color="sky"
+    :loading="pending"
     @click="exportExcel()" />
 </template>
