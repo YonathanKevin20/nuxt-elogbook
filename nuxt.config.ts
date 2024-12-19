@@ -31,7 +31,8 @@ export default defineNuxtConfig({
       dirs: [
         './server/database/schemas',
       ]
-    }
+    },
+    preset: 'bun',
   },
 
   modules: [
